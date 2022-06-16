@@ -1,5 +1,18 @@
 # this file is sourced from netbox-cli.init.sh
 
+# if we have jq installed, use it. otherwise, fall back to json_xs, json_pp, or just plain cat
+_jq(){
+	if which jq 2>/dev/null >/dev/null; then
+		jq
+	elif which json_pp 2>/dev/null >/dev/null; then
+		json_pp
+	elif which json_xs 2>/dev/null >/dev/null; then
+		json_xs
+	elif which cat 2>/dev/null >/dev/null; then
+		cat
+	fi
+}
+
 # main function: this is what we will run on the command line
 netbox () {
 	subcmd="$1"
@@ -21,7 +34,7 @@ netbox () {
 		delete)
 			__netbox_delete "$@"
 		;;
-	esac | jq
+	esac | _jq
 }
 
 __netbox_build_path () {
@@ -82,7 +95,23 @@ function _sed () {
 
 # rebuild autocomplete file
 if [[ ! -e "$__netbox_completion_cache" ]] || [[ $(( $( date +%s ) - $( stat -f %m "$__netbox_completion_cache" ) )) -gt 86400 ]]; then
-	netbox get / | jq | grep http | cut -d\" -f2 | while read path; do
+
+
+	# first, let's make sure we can talk to the API
+	# (if the cache is already present, it's reasonable to assume we have API access)
+	headers=$(mktemp)
+	__netbox_curl -X GET --dump-header "$headers" -o /dev/null "https://$__netbox_hostname/api/"
+	status=$( head -1 "$headers" | awk '{ print $2 }' )
+	if [[ "$status" != 200 ]]; then
+		echo "HTTP request failed -- response headers below:" >&2
+		cat "$headers" >&2
+		return
+	fi
+	rm -f "$headers"
+	unset headers
+
+
+	netbox get / | _jq | grep http | cut -d\" -f2 | while read path; do
 		netbox get /$path/ | grep http | _sed -re 's|.*/api/|/|' -e 's|/".*|/|';
 	done > "$__netbox_completion_cache"
 fi
