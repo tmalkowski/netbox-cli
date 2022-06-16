@@ -118,7 +118,7 @@ if [[ ! -e "$__netbox_completion_cache" ]] || [[ $(( $( date +%s ) - $( _stat "$
 		cat "$headers" >&2
 		return
 	fi
-	rm -f "$headers"
+	rm -f "$headers" 2>/dev/null >/dev/null
 	unset headers
 
 
