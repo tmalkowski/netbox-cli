@@ -13,6 +13,17 @@ _jq(){
 	fi
 }
 
+_stat(){
+	if stat --version 2>/dev/null >/dev/null; then
+		# gnu stat supports --version, bsd/macos stat does not
+		stat -c %Y "$@"
+	else
+		# let's assume if not linux then macos/bsd-like
+		stat -f %m "$@"
+	fi
+}
+
+
 # main function: this is what we will run on the command line
 netbox () {
 	subcmd="$1"
@@ -94,7 +105,7 @@ function _sed () {
 }
 
 # rebuild autocomplete file
-if [[ ! -e "$__netbox_completion_cache" ]] || [[ $(( $( date +%s ) - $( stat -f %m "$__netbox_completion_cache" ) )) -gt 86400 ]]; then
+if [[ ! -e "$__netbox_completion_cache" ]] || [[ $(( $( date +%s ) - $( _stat "$__netbox_completion_cache" ) )) -gt 86400 ]]; then
 
 
 	# first, let's make sure we can talk to the API
