@@ -106,7 +106,7 @@ __netbox_delete () {
 }
 
 function _sed () {
-	if which gsed 2>/dev/null; then
+	if which gsed 2>/dev/null >/dev/null; then
 		gsed "$@"
 	else
 		sed "$@"
