@@ -1,0 +1,14 @@
+## bash sources this file
+
+# hostname netbox is configured to use (typically CNAME)
+__netbox_hostname=netbox.example.com
+
+# tokens are in netbox: /admin/users/token/ 
+__netbox_token=7d5a9cc8b7bb646644bdc749bc73bbcd69c31683
+
+# where to keep API paths for bash completion
+__netbox_completion_cache="$HOME/.netbox-completion-cache"
+
+# change this to point to the repo directory (this is necessary due to sourcing this file)
+source "$HOME/netbox-utils/netbox-cli.sh"
+
