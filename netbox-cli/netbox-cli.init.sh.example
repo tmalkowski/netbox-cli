@@ -9,6 +9,10 @@ __netbox_token=7d5a9cc8b7bb646644bdc749bc73bbcd69c31683
 # where to keep API paths for bash completion
 __netbox_completion_cache="$HOME/.netbox-completion-cache"
 
+# how long (seconds) to consider cache file as still valid before trying to fetch again
+# (this only really changes after netbox upgrades, since it's just the API paths)
+__netbox_cache_max_age=604800 # 7 days
+
 # change this to point to the repo directory (this is necessary due to sourcing this file)
 source "$HOME/netbox-utils/netbox-cli/netbox-cli.sh"
 

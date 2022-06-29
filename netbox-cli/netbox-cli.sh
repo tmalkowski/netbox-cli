@@ -14,6 +14,11 @@ if ! which jq 2>/dev/null >/dev/null; then
 	alias jq=json_pp
 fi
 
+# set defaults in case it's not defined otherwise
+if [[ -z "$__netbox_cache_max_age" ]]; then
+	__netbox_cache_max_age=86400 # 1 day
+fi
+
 _stat(){
 	if stat --version 2>/dev/null >/dev/null; then
 		# gnu stat supports --version, bsd/macos stat does not
@@ -114,7 +119,7 @@ function _sed () {
 }
 
 # rebuild autocomplete file
-if [[ ! -e "$__netbox_completion_cache" ]] || [[ ! -s "$__netbox_completion_cache" ]] || [[ $(( $( date +%s ) - $( _stat "$__netbox_completion_cache" ) )) -gt 86400 ]]; then
+if [[ ! -e "$__netbox_completion_cache" ]] || [[ ! -s "$__netbox_completion_cache" ]] || [[ $(( $( date +%s ) - $( _stat "$__netbox_completion_cache" ) )) -gt "$__netbox_cache_max_age" ]]; then
 
 	# first, let's make sure we can talk to the API
 	# (if the cache is already present, it's reasonable to assume we have API access)
