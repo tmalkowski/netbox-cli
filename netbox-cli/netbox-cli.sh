@@ -55,9 +55,9 @@ netbox () {
 	esac
 
 	if [[ -t 1 ]]; then
-		cat "$out" | jq
+		cat "$out" | jq || cat "$out"
 	else
-		cat "$out" | json_pp
+		cat "$out" | json_pp || cat "$out"
 	fi
 	rm -f "$out" >/dev/null 2>/dev/null
 }
@@ -87,7 +87,7 @@ __netbox_build_path () {
 }
 
 __netbox_curl () {
-	curl -s -H "Authorization: Token $__netbox_token" -H 'Content-Type: application/json' "$@"
+	curl -L -s -H "Authorization: Token $__netbox_token" -H 'Content-Type: application/json' "$@"
 }
 
 __netbox_get () { 
