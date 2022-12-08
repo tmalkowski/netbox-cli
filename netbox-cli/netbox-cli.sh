@@ -52,6 +52,9 @@ netbox () {
 		delete)
 			__netbox_delete "$@" >"$out"
 		;;
+		options)
+			__netbox_options "$@" >"$out"
+		;;
 	esac
 
 	if [[ -t 1 ]]; then
@@ -110,6 +113,10 @@ __netbox_delete () {
 	__netbox_curl -X DELETE "$( __netbox_build_path "$1" "$2" )" 
 }
 
+__netbox_options () {
+	__netbox_curl -X OPTIONS "$( __netbox_build_path "$1" )"
+}
+
 function _sed () {
 	if which gsed 2>/dev/null >/dev/null; then
 		gsed "$@"
@@ -151,7 +158,7 @@ function __netbox_bash_completion () {
 	local api_args=$( echo "$line" | awk '{ print $4 }' )
 
 	if [[ "$subcmd" == "$word" ]]; then
-		COMPREPLY=($( printf "get\npost\nput\npatch\ndelete\n" | grep -E "^$word" ))
+		COMPREPLY=($( printf "get\npost\nput\npatch\ndelete\noptions\n" | grep -E "^$word" ))
 	elif [[ "$api_path" == "$word" ]]; then
 		COMPREPLY=($( grep -E "^$word" "$__netbox_completion_cache" ))
 	#elif [[ "$api_args" == "$word" ]]; then
