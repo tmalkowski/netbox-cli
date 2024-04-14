@@ -86,7 +86,7 @@ __netbox_build_path () {
 	else
 		args="?$args"
 	fi
-	echo "https://$__netbox_hostname/api$path$args"
+	echo "$__netbox_url/api$path$args"
 }
 
 __netbox_curl () {

@@ -1,7 +1,7 @@
 ## bash sources this file
 
-# hostname netbox is configured to use (typically CNAME)
-__netbox_hostname=netbox.example.com
+# hostname netbox is configured to use (typically CNAME), including http/https.
+__netbox_url=https://netbox.example.com
 
 # tokens are in netbox: /admin/users/token/ 
 __netbox_token=7d5a9cc8b7bb646644bdc749bc73bbcd69c31683
