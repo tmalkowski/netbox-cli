@@ -9,7 +9,7 @@ Then edit netbox-cli.init.sh and set netbox hostname + api token.
 
 To add netbox cli function to your active, shell, source the init script:
 ```
-source $REPODIR/netbox-cli/netbox-cli.init.sh
+source $REPODIR/netbox-cli.init.sh
 ```
 
 You can also add that to your .bash_profile; personally, I just source the file in whatever shell I need it in.
@@ -84,7 +84,7 @@ $ netbox get /extras/tags/ slug=dept-clas
   "results": [
     {
       "id": 54,
-      "url": "https://assets.tr.txstate.edu/api/extras/tags/54/",
+      "url": "https://netbox.example.com/api/extras/tags/54/",
       "display": "Department: Conslng, Ldrship, Adlt Educ & Schl Psych",
       "name": "Department: Conslng, Ldrship, Adlt Educ & Schl Psych",
       "slug": "dept-clas",
@@ -106,12 +106,12 @@ Add a new vmware cluster: JSON object is sent in POST request body
 $ netbox post /virtualization/clusters/ '{"name": "Test cluster","type":9}'
 {
   "id": 13,
-  "url": "https://assets.tr.txstate.edu/api/virtualization/clusters/13/",
+  "url": "https://netbox.example.com/api/virtualization/clusters/13/",
   "display": "Test cluster",
   "name": "Test cluster",
   "type": {
     "id": 9,
-    "url": "https://assets.tr.txstate.edu/api/virtualization/cluster-types/9/",
+    "url": "https://netbox.example.com/api/virtualization/cluster-types/9/",
     "display": "vSphere",
     "name": "vSphere",
     "slug": "vsphere"
@@ -134,12 +134,12 @@ Change an object without having to specify all the required details:
 $ netbox patch /virtualization/clusters/13 '{"name":"Testy test cluster"}'
 {
   "id": 13,
-  "url": "https://assets.tr.txstate.edu/api/virtualization/clusters/14/",
+  "url": "https://netbox.example.com/api/virtualization/clusters/14/",
   "display": "Testy test cluster",
   "name": "Testy test cluster",
   "type": {
     "id": 9,
-    "url": "https://assets.tr.txstate.edu/api/virtualization/cluster-types/9/",
+    "url": "https://netbox.example.com/api/virtualization/cluster-types/9/",
     "display": "vSphere",
     "name": "vSphere",
     "slug": "vsphere"
@@ -169,12 +169,12 @@ For a better understanding of when you should use PUT vs PATCH, see netbox API d
 $ netbox put /virtualization/clusters/13 '{"name":"Test cluster","type":9}'
 {
   "id": 13,
-  "url": "https://assets.tr.txstate.edu/api/virtualization/clusters/14/",
+  "url": "https://netbox.example.com/api/virtualization/clusters/14/",
   "display": "Test cluster",
   "name": "Test cluster",
   "type": {
     "id": 9,
-    "url": "https://assets.tr.txstate.edu/api/virtualization/cluster-types/9/",
+    "url": "https://netbox.example.com/api/virtualization/cluster-types/9/",
     "display": "vSphere",
     "name": "vSphere",
     "slug": "vsphere"

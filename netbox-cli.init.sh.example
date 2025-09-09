@@ -14,5 +14,5 @@ __netbox_completion_cache="$HOME/.netbox-completion-cache"
 __netbox_cache_max_age=604800 # 7 days
 
 # change this to point to the repo directory (this is necessary due to sourcing this file)
-source "$HOME/netbox-utils/netbox-cli/netbox-cli.sh"
+source "$HOME/netbox-cli/netbox-cli.sh"
 
