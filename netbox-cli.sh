@@ -131,7 +131,7 @@ if [[ ! -e "$__netbox_completion_cache" ]] || [[ ! -s "$__netbox_completion_cach
 	# first, let's make sure we can talk to the API
 	# (if the cache is already present, it's reasonable to assume we have API access)
 	headers=$(mktemp)
-	__netbox_curl -X GET --dump-header "$headers" -o /dev/null "https://$__netbox_hostname/api/"
+	__netbox_curl -X GET --dump-header "$headers" -o /dev/null "$__netbox_url/api/"
 	status=$( head -1 "$headers" | awk '{ print $2 }' )
 	if [[ "$status" != 200 ]]; then
 		echo "HTTP request failed -- response headers below:" >&2
