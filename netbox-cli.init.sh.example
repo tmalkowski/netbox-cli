@@ -6,6 +6,9 @@ __netbox_url=https://netbox.example.com
 # tokens are in netbox: /admin/users/token/ 
 __netbox_token=7d5a9cc8b7bb646644bdc749bc73bbcd69c31683
 
+# OPTIONAL: export token variable to share with other scripts if needed
+#export NETBOX_TOKEN=$__netbox_token
+
 # where to keep API paths for bash completion
 __netbox_completion_cache="$HOME/.netbox-completion-cache"
 
