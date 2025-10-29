@@ -1,17 +1,10 @@
 # this file is sourced from netbox-cli.init.sh
 
-if ! which json_pp 2>/dev/null >/dev/null; then
-	echo "ERROR: missing json_pp" >&2
-	echo "Might try: dnf whatprovides '*/json_pp'" >&2
-	echo >&2
-	echo "(or if you're using non-system perl, try cpanm JSON::PP)" >&2
+if ! command -v jq 2>/dev/null >/dev/null && ! command -v json_pp 2>/dev/null >/dev/null; then
+	printf '\e[91m%s\e[0m\n' "netbox-cli: WARNING: missing jq and json_pp -- JSON validation will not be possible." >&2
+	echo "(Might try: dnf whatprovides '*/jq')" >&2
 	echo >&2
 	return
-fi
-
-# if we have jq installed, use it. otherwise, fall back to boring greyscale
-if ! which jq 2>/dev/null >/dev/null; then
-	alias jq=json_pp
 fi
 
 # set defaults in case it's not defined otherwise
@@ -19,8 +12,8 @@ if [[ -z "$__netbox_cache_max_age" ]]; then
 	__netbox_cache_max_age=86400 # 1 day
 fi
 
+# different arguments for macos vs gnu/linux
 _stat(){
-	# gnu stat supports --version, bsd/macos stat does not
 	case "$OSTYPE" in
 		darwin*)
 			stat -f %m "$@"
@@ -31,7 +24,6 @@ _stat(){
 		;;
 	esac
 }
-
 
 # main function: this is what we will run on the command line
 netbox () {
@@ -60,11 +52,24 @@ netbox () {
 		;;
 	esac
 
+	# make sure jq doesn't generate colorized output when piping elsewhere.
+	# (it shouldn't, but i ran into this in the past, so it's worth being explicit about it.)
 	if [[ -t 1 ]]; then
-		cat "$out" | jq || cat "$out"
+		NO_COLOR=1
 	else
-		cat "$out" | json_pp || cat "$out"
+		unset NO_COLOR
 	fi
+	
+	# if we have jq installed, use it. otherwise, fall back to something we can actually use
+	if command -v jq 2>/dev/null >/dev/null; then
+		jq < "$out"
+	elif command -v json_pp 2>/dev/null >/dev/null; then
+		json_pp < "$out"
+	else
+		cat "$out"
+	fi
+
+	# throw away the temp file
 	rm -f "$out" >/dev/null 2>/dev/null
 }
 
