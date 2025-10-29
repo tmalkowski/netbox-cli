@@ -20,13 +20,16 @@ if [[ -z "$__netbox_cache_max_age" ]]; then
 fi
 
 _stat(){
-	if stat --version 2>/dev/null >/dev/null; then
-		# gnu stat supports --version, bsd/macos stat does not
-		stat -c %Y "$@"
-	else
-		# let's assume if not linux then macos/bsd-like
-		stat -f %m "$@"
-	fi
+	# gnu stat supports --version, bsd/macos stat does not
+	case "$OSTYPE" in
+		darwin*)
+			stat -f %m "$@"
+		;;
+		*)
+			# assume linux unless specifically macos
+			stat -c %Y "$@"
+		;;
+	esac
 }
 
 
