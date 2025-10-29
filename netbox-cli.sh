@@ -135,7 +135,7 @@ function _sed () {
 
 # rebuild autocomplete file
 if [[ ! -e "$__netbox_completion_cache" ]] || [[ ! -s "$__netbox_completion_cache" ]] || [[ $(( $( date +%s ) - $( _stat "$__netbox_completion_cache" ) )) -gt "$__netbox_cache_max_age" ]]; then
-	echo "netbox-cli: updating cache for tab-completion, this should complete within 1-2 seconds." >&2
+	echo "netbox-cli: updating cache for tab-completion, this should complete within 5 seconds or so. this should only be required once every $(( $__netbox_completion_cache / 86400 )) days." >&2
 
 	# first, let's make sure we can talk to the API
 	# (if the cache is already present, it's reasonable to assume we have API access)
