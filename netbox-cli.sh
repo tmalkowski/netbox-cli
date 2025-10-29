@@ -151,8 +151,8 @@ if [[ ! -e "$__netbox_completion_cache" ]] || [[ ! -s "$__netbox_completion_cach
 	unset headers
 
 	# now let's rebuild the cache
-	__netbox_get / | json_pp | grep http | cut -d\" -f2 | while read path; do
-		__netbox_get /$path/ | json_pp | grep http | _sed -re 's|.*/api/|/|' -e 's|/".*|/|';
+	__netbox_get / | ( command -v jq 2>/dev/null >/dev/null && jq -M || json_pp ) | grep http | cut -d\" -f2 | while read path; do
+		__netbox_get /$path/ | ( command -v jq 2>/dev/null >/dev/null && jq -M || json_pp ) | grep http | _sed -re 's|.*/api/|/|' -e 's|/".*|/|';
 	done > "$__netbox_completion_cache"
 fi
 
